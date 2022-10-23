@@ -6,6 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  base: '/yao-client/',
   plugins: [
     react(),
     checker({ typescript: true }),
