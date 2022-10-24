@@ -1,46 +1,85 @@
 import { useState } from 'react';
 
-import logo from './logo.svg';
+import styled from '@emotion/styled';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import {
+  createTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-import './App.css';
+let theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#3fb5a8',
+    },
+    secondary: {
+      main: '#f5c400',
+    },
+  },
+});
+theme = responsiveFontSizes(theme);
+
+const StyledInput = styled(TextField)`
+  width: 45%;
+  margin: 40px 0;
+`;
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+`;
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const [text, setText] = useState<string>('');
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          minHeight: '100vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          bgcolor: 'background.default',
+          color: 'text.primary',
+          borderRadius: 1,
+          p: 3,
+        }}
+      >
+        <Typography variant="h1">Yao Logistics</Typography>
+        <Container>
+          <StyledInput
+            id="outlined-name"
+            label="Texto obtenido"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            multiline
+            rows={5}
+            variant="standard"
+          />
+          <StyledInput
+            id="outlined-name"
+            label="Texto esperado"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            multiline
+            rows={5}
+            variant="standard"
+          />
+        </Container>
+        <Button variant="contained" color="success">
+          Comparar
+        </Button>
+      </Box>
+    </ThemeProvider>
   );
 };
 
