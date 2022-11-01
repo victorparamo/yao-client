@@ -37,6 +37,7 @@ const Container = styled.div`
 
 const App = () => {
   const [text, setText] = useState<string>('');
+  const [text2, setText2] = useState<string>('');
 
   return (
     <ThemeProvider theme={theme}>
@@ -68,8 +69,8 @@ const App = () => {
           <StyledInput
             id="outlined-name"
             label="Texto esperado"
-            value={text}
-            onChange={(event) => setText(event.target.value)}
+            value={text2}
+            onChange={(event) => setText2(event.target.value)}
             multiline
             rows={5}
             variant="standard"
