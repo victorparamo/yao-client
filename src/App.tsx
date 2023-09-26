@@ -1,15 +1,16 @@
-import { useState } from 'react';
-
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import {
   createTheme,
   ThemeProvider,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+
+import getCodes from 'api/getCodes';
+import CodeTable from 'CodeTable';
+import useAsyncRequest from 'hooks/useAsyncRequest';
+import Loading from 'Loading';
 
 let theme = createTheme({
   palette: {
@@ -24,20 +25,16 @@ let theme = createTheme({
 });
 theme = responsiveFontSizes(theme);
 
-const StyledInput = styled(TextField)`
-  width: 45%;
-  margin: 40px 0;
-`;
-
-const Container = styled.div`
+const Container = styled(Box)`
   display: flex;
-  width: 100%;
   justify-content: space-around;
+  margin: 40px 0;
+  max-height: 700px;
+  overflow: scroll;
 `;
 
 const App = () => {
-  const [text, setText] = useState<string>('');
-  const [text2, setText2] = useState<string>('');
+  const asyncRequest = useAsyncRequest(getCodes, { eager: true });
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,29 +53,17 @@ const App = () => {
         }}
       >
         <Typography variant="h1">Yao Logistics</Typography>
-        <Container>
-          <StyledInput
-            id="outlined-name"
-            label="Texto obtenido"
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            multiline
-            rows={5}
-            variant="standard"
-          />
-          <StyledInput
-            id="outlined-name"
-            label="Texto esperado"
-            value={text2}
-            onChange={(event) => setText2(event.target.value)}
-            multiline
-            rows={5}
-            variant="standard"
-          />
-        </Container>
-        <Button variant="contained" color="success">
-          Comparar
-        </Button>
+        {asyncRequest.isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {asyncRequest.data ? (
+              <Container sx={{ width: '80%' }}>
+                <CodeTable codes={asyncRequest.data} />
+              </Container>
+            ) : null}
+          </>
+        )}
       </Box>
     </ThemeProvider>
   );
